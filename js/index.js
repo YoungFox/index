@@ -26,6 +26,7 @@ Fund.prototype = {
 		return monthMoney;
 	},
 	calFinalMoney: function(months, moneyPerMonth, rate, principalRate) {
+		var principalRate = principalRate || 0;
 		if (months > 1) {
 			// console.log(this.calPrincipal(months, this.options.moneyPerMonth, principalRate));
 			return this.calculate(this.calFinalMoney(months-1, moneyPerMonth, rate, principalRate) + this.calPrincipal(months-1,moneyPerMonth,principalRate) ,rate);
@@ -52,5 +53,48 @@ Fund.prototype = {
 			var a = this.calByYear(moneyPerYear, rate);
 			return a;
 		}
+	},
+
+
+
+	calByYearKeep: function ( principal , rate){
+
+		var num = principal* (1+ rate);
+
+		// debugger;
+		return num;
+	},
+
+	// 一直持有
+	calFinalMoneyKeep: function (years, moneyPerYear, rate){
+		if (years > 1) {
+			// console.log(this.calPrincipal(years, this.options.moneyPerMonth, principalRate));
+			return this.calByYearKeep(this.calFinalMoneyKeep(years-1,moneyPerYear, rate) + moneyPerYear, rate[years - 1]);
+		} else if (years == 1) {
+			var a = this.calByYearKeep(moneyPerYear, rate[0]);
+			return a;
+		}
+	},
+
+
+	calByYearSale: function ( principal , rate){
+		if(rate < 0){
+			return principal;
+		}else{
+			return principal* (1+ rate);
+		}
+	},
+
+	// 熊市卖出
+	calFinalMoneySale: function (years, moneyPerYear, rate){
+		if (years > 1) {
+			// console.log(this.calPrincipal(years, this.options.moneyPerMonth, principalRate));
+			return this.calByYearSale(this.calFinalMoneySale(years-1,moneyPerYear, rate) + moneyPerYear, rate[years - 1]);
+		} else if (years == 1) {
+			var a = this.calByYearSale(moneyPerYear, rate[0]);
+			return a;
+		}
 	}
+
+
 }
