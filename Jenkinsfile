@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
+                sh 'npm config set strict-ssl false'
                 sh 'npm install' 
             }
         }
