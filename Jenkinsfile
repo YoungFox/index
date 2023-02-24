@@ -1,4 +1,9 @@
 pipeline {
+  steges{
+    steps {
+      sh 'docker login -u yangwenliang -p h7sf+awkh7sf+awk'
+    }
+  }
     agent {
         docker {
             image '16.16.0-alpine' 
